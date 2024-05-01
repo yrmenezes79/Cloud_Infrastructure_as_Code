@@ -1,0 +1,34 @@
+- name: 1 – Instalação mysql
+  hosts: server2
+  become: true
+  tasks:
+    # task 1
+    - name: Instalação mariadb
+      package:
+        name: mariadb
+        state: latest
+
+    # task 2
+    - name: Instalação do telnet e componentes adicionais
+      yum:
+        name: "{{ item }}"
+        state: present
+        update_cache: yes
+      with_items:
+        - telnet
+
+    # task 3
+    - name: Cópia de arquivo 1.yml
+      copy:
+        src: 1.yml
+        dest: /root/1.yml
+        owner: root
+        group: root
+        mode: '0644'
+
+  handlers:
+    - name: restart mariadb
+      service:
+        name: mariadb
+        state: started
+

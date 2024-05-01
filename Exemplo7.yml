@@ -1,0 +1,2 @@
+     - name: Instalacao mariadb
+       package: name=mariadb state=latest

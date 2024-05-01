@@ -1,0 +1,13 @@
+- name: Configurando arquivo '/etc/hosts'
+  hosts: server1
+
+  tasks:
+    - name: Configuracao do arquivo /etc/hosts
+      copy:
+        dest: /etc/hosts
+        content: |
+          127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+          ::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+          3.131.90.183 server
+          192.168.86.143 server2
+          192.168.86.142 server1

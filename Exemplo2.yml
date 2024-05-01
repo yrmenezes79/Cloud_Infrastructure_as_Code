@@ -1,0 +1,33 @@
+- name: Install Terraform
+  hosts: all
+
+  vars:
+    terraform_zip_url: "https://releases.hashicorp.com/terraform/1.8.2/terraform_1.8.2_linux_amd64.zip"
+
+  tasks:
+    - name: Download Terraform
+      get_url:
+        url: "{{ terraform_zip_url }}"
+        dest: /root/terraform.zip
+
+    - name: Install Unzip
+      yum:
+        name: unzip
+        state: present
+
+    - name: Unzip Terraform
+      unarchive:
+        src: /root/terraform.zip
+        dest: /root/
+        remote_src: yes
+
+    - name: Copy Terraform binary to PATH
+      copy:
+        src: /root/terraform
+        dest: /usr/bin/terraform
+        remote_src: yes
+
+    - name: Set execute permissions for Terraform binary
+      file:
+        path: /usr/bin/terraform
+        mode: "+x"

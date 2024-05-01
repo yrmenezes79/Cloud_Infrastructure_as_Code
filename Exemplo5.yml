@@ -1,0 +1,6 @@
+- name: TESTE
+  hosts: all
+
+  tasks:
+        - include: Exemplo3.yml
+        - include: Exemplo4.yml

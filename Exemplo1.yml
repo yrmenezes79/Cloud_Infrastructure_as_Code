@@ -1,0 +1,13 @@
+- name: Instalacao de Aplicativos
+  hosts: all
+
+  tasks:
+    - name: Install utils
+      yum:
+        name: yum-utils
+        state: latest
+
+    - name: Install device-mapper-persistent-data
+      yum:
+        name: device-mapper-persistent-data
+        state: latest
