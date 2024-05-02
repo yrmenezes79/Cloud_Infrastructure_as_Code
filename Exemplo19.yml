@@ -1,0 +1,17 @@
+- name: Create EC2
+  hosts: localhost
+  vars:
+    ansible_python_interpreter: "/usr/bin/python3.9"
+  tasks:
+
+  - name: start an instance with a public IP address
+    amazon.aws.ec2_instance:
+      name: "mack"
+      key_name: "mack2"
+      instance_type: t2.micro
+      security_group: default
+      network:
+        assign_public_ip: true
+      image_id: ami-0fe630eb857a6ec83
+      tags:
+        Environment: Testing
