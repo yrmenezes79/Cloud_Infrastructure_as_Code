@@ -1,0 +1,25 @@
+---
+- name: Configuração do Ambiente Java
+  hosts: all
+  become: true
+  tasks:
+    - name: Instalar o OpenJDK
+      yum:
+        name: java-1.8.0-openjdk
+        state: present
+
+    - name: Configurar a variável de ambiente JAVA_HOME
+      lineinfile:
+        dest: /etc/profile.d/java.sh
+        line: 'export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk'
+        create: yes
+
+    - name: Recarregar o arquivo de perfil do shell
+      shell: source /etc/profile
+      args:
+        executable: /bin/bash  # Especificamos o shell para garantir que o comando 'source' seja interpretado corretamente
+
+    - name: Instalar o Apache Maven
+      yum:
+        name: maven
+        state: present
