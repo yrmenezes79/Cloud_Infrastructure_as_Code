@@ -1,0 +1,11 @@
+- name: Stop EC2
+  hosts: localhost
+  vars:
+    ansible_python_interpreter: "/usr/bin/python3.9"
+  tasks:
+
+  - name: restart a particular instance by its ID
+    amazon.aws.ec2_instance:
+      state: stopped
+      instance_ids:
+        - i-0a927c471d23781ec
