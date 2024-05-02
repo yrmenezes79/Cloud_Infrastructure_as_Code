@@ -1,0 +1,42 @@
+---
+- name: Instalação de dependências
+  hosts: localhost
+  become: true
+  tasks:
+    - name: Instalar git
+      dnf:
+        name: git
+        state: present
+
+    - name: Instalar Python 3.9 e pip
+      dnf:
+        name: python3.9-pip
+        state: present
+
+    - name: Instalar boto3 e botocore usando pip3.9
+      pip:
+        name: "{{ item }}"
+        executable: pip3.9
+      loop:
+        - boto3
+        - botocore
+
+    - name: Instalar Ansible Core
+      dnf:
+        name: ansible-core
+        state: present
+
+    - name: Baixar AWS CLI
+      command: "curl -o awscliv2.zip https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip"
+      args:
+        chdir: "{{ ansible_env.HOME }}"
+
+    - name: Extrair AWS CLI
+      command: "unzip awscliv2.zip"
+      args:
+        chdir: "{{ ansible_env.HOME }}"
+
+    - name: Instalar AWS CLI
+      command: "./aws/install"
+      args:
+        chdir: "{{ ansible_env.HOME }}"
