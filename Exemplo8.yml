@@ -3,7 +3,7 @@
     - user: root
   tasks:
     - name: Verificando se o arquivo existe
-      command: ls /tmp/mack1
+      command: ls /tmp/Exemplo11.yml
       register: file_exists
       ignore_errors: yes
 
