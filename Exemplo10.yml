@@ -1,0 +1,11 @@
+---
+- name: Collect and save system information
+  hosts: all
+  tasks:
+    - name: Collect system facts
+      setup:
+
+    - name: Save system information to a file
+      copy:
+        content: "{{ ansible_facts | to_nice_json }}"
+        dest: "facts.json"
