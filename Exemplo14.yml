@@ -1,0 +1,13 @@
+---
+- name: Listar buckets da AWS
+  hosts: localhost
+  gather_facts: no
+  tasks:
+    - name: Coletar fatos sobre os buckets do Amazon S3
+      community.aws.s3_bucket_facts.s3_bucket_facts:
+      register: s3_buckets
+
+    - name: Exibir os buckets
+      debug:
+        msg: "Bucket: {{ item.name }}"
+      loop: "{{ s3_buckets.buckets }}"
