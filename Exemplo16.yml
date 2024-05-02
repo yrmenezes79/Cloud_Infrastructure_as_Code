@@ -1,0 +1,6 @@
+- name: AWS S3 Create Bucket
+  hosts: localhost
+  tasks:
+    - s3_bucket:
+        name: yuri103302052024
+        state: present
