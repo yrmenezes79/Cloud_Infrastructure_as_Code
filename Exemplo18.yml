@@ -1,0 +1,12 @@
+- name: AWS S3 Bucket List - Ansible
+  hosts: localhost
+  vars:
+    ansible_python_interpreter: "/usr/bin/python3.9"
+  tasks:
+  - name: create VPC
+    ec2_vpc_net:
+      name: "Teste"
+      cidr_block: "10.10.0.0/24"
+      region: "us-east-1"
+      state: present
+    register: vpc
