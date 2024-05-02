@@ -1,0 +1,18 @@
+---
+- name: Instalação do Midnight Commander (mc)
+  hosts: all
+  become: true
+  tasks:
+    - name: Verificar o sistema operacional
+      block:
+        - name: Instalar o Midnight Commander em sistemas Red Hat
+          yum:
+            name: mc
+            state: present
+          when: ansible_distribution == 'RedHat' or ansible_distribution == 'CentOS'
+
+        - name: Instalar o Midnight Commander em sistemas Debian/Ubuntu
+          apt:
+            name: mc
+            state: present
+          when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
