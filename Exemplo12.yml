@@ -1,0 +1,19 @@
+---
+- name: Configuração do Ambiente com PostgreSQL
+  hosts: all
+  become: true
+  tasks:
+    - name: Instalar o PostgreSQL Server
+      yum:
+        name: postgresql-server
+        state: present
+
+    - name: Inicializar o banco de dados do PostgreSQL
+      command: postgresql-setup --initdb
+      become_user: postgres  # Executar o comando como o usuário postgres
+
+    - name: Habilitar e iniciar o serviço do PostgreSQL
+      systemd:
+        name: postgresql
+        state: started
+        enabled: yes
