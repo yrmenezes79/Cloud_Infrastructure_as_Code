@@ -1,0 +1,10 @@
+- name: AWS S3 Bucket List - Ansible
+  hosts: localhost
+  vars:
+    ansible_python_interpreter: "/usr/bin/python3.9"
+  tasks:
+
+    - name: basic upload
+      community.aws.s3_sync:
+        bucket: yuri103302052024
+        file_root: Exemplo1.yml
