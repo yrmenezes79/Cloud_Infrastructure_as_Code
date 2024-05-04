@@ -2,5 +2,5 @@
   hosts: all
 
   tasks:
-        - include: Exemplo3.yml
-        - include: Exemplo4.yml
+        - include: Exemplo6.yml
+        - include: Exemplo7.yml
