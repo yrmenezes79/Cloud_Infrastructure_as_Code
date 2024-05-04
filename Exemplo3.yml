@@ -18,10 +18,10 @@
         - telnet
 
     # task 3
-    - name: Cópia de arquivo 1.yml
+    - name: Cópia de arquivo Exemplo1.yml
       copy:
-        src: 1.yml
-        dest: /root/1.yml
+        src: Exemplo1.yml
+        dest: /root/Exemplo1.yml
         owner: root
         group: root
         mode: '0644'
