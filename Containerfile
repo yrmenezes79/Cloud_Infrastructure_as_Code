@@ -11,6 +11,9 @@ ENV JDK_HOME=/usr/lib/jvm/java-17-openjdk \
 RUN pip3 install -U pip \
     && pip3 install ansible ansible-rulebook ansible-runner wheel
 
+RUN dnf update -y
+RUN dnf reinstall webkit2gtk3-jsc webkitgtk -y
+
 RUN ansible-galaxy collection install ansible.eda
 
 WORKDIR /etc/ansible
