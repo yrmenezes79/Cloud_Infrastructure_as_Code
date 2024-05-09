@@ -7,19 +7,19 @@
         port: 8000
    rules:
      - name: Action for server
-       conditio: event.payload.message == "XXXX"
+       condition: event.payload.message == "XXXX"
        action:
          run_playbook:
            name: playbook_XXXX.yml
 
      - name: Action for server
-       conditio: event.payload.message == "XXXX"
+       condition: event.payload.message == "XXXX"
        action:
          run_playbook:
            name: playbook_XXXXX.yml
 
      - name: Action for server
-       conditio: event.payload.message == "localhost"
+       condition: event.payload.message == "localhost"
        action:
          run_playbook:
            name: playbook_locahost.yml
