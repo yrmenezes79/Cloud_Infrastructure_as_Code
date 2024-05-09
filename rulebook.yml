@@ -17,3 +17,9 @@
        action:
          run_playbook:
            name: playbook_XXXXX.yml
+
+     - name: Action for server
+       conditio: event.payload.message == "localhost"
+       action:
+         run_playbook:
+           name: playbook_locahost.yml
