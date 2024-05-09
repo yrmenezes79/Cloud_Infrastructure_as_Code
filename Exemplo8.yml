@@ -3,13 +3,13 @@
     - user: root
   tasks:
     - name: Verificando se o arquivo existe
-      command: ls /tmp/Exemplo11.yml
+      command: ls /tmp/mack1
       register: file_exists
       ignore_errors: yes
 
     - name: criando o aquivo
       file:
-        path: /tmp/Exemplo11.yml
+        path: /tmp/mack1
         state: touch
       when: file_exists is failed
 
