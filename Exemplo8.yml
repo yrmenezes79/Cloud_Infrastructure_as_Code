@@ -9,7 +9,7 @@
 
     - name: criando o aquivo
       file:
-        path: /tmp/mack1
+        path: /tmp/Exemplo11.yml
         state: touch
       when: file_exists is failed
 
