@@ -1,8 +1,9 @@
 ---
-- name: Respond to localhost event
+- name: Teste Ping
   hosts: localhost
+  gather_facts: no
   tasks:
-    - name: Log message to localhost
-      ansible.builtin.debug:
-        msg: "Received a trigger for localhost"
+    - name: Ping do servidor
+      ping:
+
 
