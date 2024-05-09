@@ -1,7 +1,8 @@
 ---
-- name: respond to localhost event
+- name: Respond to localhost event
   hosts: localhost
   tasks:
     - name: Log message to localhost
       ansible.builtin.debug:
-        msg: "Receuved a trigger for localhost"
+        msg: "Received a trigger for localhost"
+
