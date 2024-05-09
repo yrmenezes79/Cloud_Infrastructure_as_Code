@@ -7,18 +7,6 @@
         port: 5000
    rules:
      - name: Action for server
-       condition: event.payload.message == "XXXX"
-       action:
-         run_playbook:
-           name: playbook_XXXX.yml
-
-     - name: Action for server
-       condition: event.payload.message == "XXXX"
-       action:
-         run_playbook:
-           name: playbook_XXXXX.yml
-
-     - name: Action for server
        condition: event.payload.message == "localhost"
        action:
          run_playbook:
