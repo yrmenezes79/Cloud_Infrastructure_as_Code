@@ -26,10 +26,9 @@ RUN ansible-galaxy collection install ansible.eda
 WORKDIR /etc/ansible
 
 # Adicionar arquivos de configuração
-ADD inventory.ini /etc/ansible/
-ADD rulebook.yml /etc/ansible/
-ADD playbook_server1.yml /etc/ansible/
-ADD playbook_server2.yml /etc/ansible/
+COPY inventory.ini /etc/ansible/
+COPY rulebook.yml /etc/ansible/
+COPY playbook_localhost.yml /etc/ansible/
 
 # Expor a porta 5000 para o webhook
 EXPOSE 5000
