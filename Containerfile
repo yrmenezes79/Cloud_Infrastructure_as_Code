@@ -20,7 +20,8 @@ WORKDIR /etc/ansible
 
 ADD inventory.ini /etc/ansible/
 ADD rulebook.yml /etc/ansible/
-ADD playbook_server1.yml /etc/ansible/
+ADD playbook_XXXX.yml /etc/ansible/
+ADD playbook_XXXXX.yml /etc/ansible/
 
 EXPOSE 5000
 
