@@ -1,0 +1,12 @@
+- name: create a bucket
+  hosts: localhost
+  vars:
+    ansible_python_interpreter: "/usr/bin/python3.9"
+  tasks:
+  - name: Storage bucket
+    google.cloud.gcp_storage_bucket:
+      name: BUCKET_NAME
+      project: PROJECT_ID
+      auth_kind: serviceaccount
+      service_account_file: "ARQUIVO.JSON"
+      state: present
