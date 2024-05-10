@@ -1,8 +1,8 @@
 ---
 - name: Clone GitHub Repository
-  hosts: localhost  # Clonaremos o repositório na máquina local
+  hosts: all
   tasks:
     - name: Clone the GitHub repository
       git:
         repo: https://github.com/yrmenezes79/Cloud_Infrastructure_as_Code
-        dest: /root  # Substitua pelo diretório de destino onde deseja clonar o repositório
+        dest: /root/Cloud_Infrastructure_as_Code
