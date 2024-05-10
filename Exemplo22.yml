@@ -1,0 +1,17 @@
+---
+- name: Install Podman on Red Hat
+  hosts: all
+  become: yes
+  vars:
+    ansible_python_interpreter: "/usr/bin/python3"  # Use o interpretador Python correto para Red Hat
+  tasks:
+    - name: Install Podman package
+      yum:
+        name: podman
+        state: present
+
+    - name: Ensure Podman service is enabled and started
+      systemd:
+        name: podman
+        enabled: yes
+        state: started
