@@ -1,0 +1,58 @@
+---
+- name: Deploy container to Amazon ECS
+  hosts: localhost
+  gather_facts: no
+
+  tasks:
+    - name: Register task definition
+      ecs_taskdefinition:
+        family: ansible_task_family
+        container_definitions: |
+          [
+            {
+              "name": "ansible_container",
+              "image": "registry.access.redhat.com/ubi9/ubi:latest",
+              "essential": true,
+              "portMappings": [
+                {
+                  "containerPort": 5000,
+                  "hostPort": 5000
+                }
+              ],
+              "environment": [
+                {
+                  "name": "ANSIBLE_HOST_KEY_CHECKING",
+                  "value": "False"
+                },
+                {
+                  "name": "JDK_HOME",
+                  "value": "/usr/lib/jvm/java-17-openjdk"
+                },
+                {
+                  "name": "JAVA_HOME",
+                  "value": "/usr/lib/jvm/java-17-openjdk"
+                }
+              ]
+            }
+          ]
+      register: task_definition
+
+    - name: Create or update ECS service
+      ecs_service:
+        cluster: ansible
+        service_name: ansible_aws
+        task_definition: "{{ task_definition.taskDefinition.family }}:{{ task_definition.taskDefinition.revision }}"
+        desired_count: 1
+        launch_type: EC2
+        region: us-east-1
+      register: ecs_service_result
+
+    - name: Get service details
+      uri:
+        url: "{{ ecs_service_result.service.loadBalancers[0].dnsName }}:5000"  # Endpoint do serviço ECS
+        return_content: yes
+      register: service_details
+
+    - name: Print service details
+      debug:
+        msg: "API URL: http://{{ service_details.content }}:5000"
