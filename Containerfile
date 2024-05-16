@@ -29,7 +29,7 @@ WORKDIR /etc/ansible
 # Adicionar arquivos de configuração
 COPY inventory.ini /etc/ansible/
 COPY rulebook.yml /etc/ansible/
-COPY playbook_localhost.yml /etc/ansible/
+COPY playbook* /etc/ansible/
 
 # Expor a porta 5000 para o webhook
 EXPOSE 5000
