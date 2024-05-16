@@ -17,10 +17,11 @@ RUN echo "Java installations:" && ls -l /usr/lib/jvm/ && java -version && echo $
 
 # Atualizar pip e instalar pacotes Python
 RUN pip3 install -U pip \
-    && pip3 install ansible ansible-rulebook ansible-runner wheel psycopg[binary]
+    && pip3 install ansible ansible-rulebook ansible-runner wheel psycopg[binary] boto3 botocore
 
 # Instalar coleções Ansible necessárias
 RUN ansible-galaxy collection install ansible.eda
+RUN ansible-galaxy collection install community.aws
 
 # Criar um diretório de trabalho
 WORKDIR /etc/ansible
