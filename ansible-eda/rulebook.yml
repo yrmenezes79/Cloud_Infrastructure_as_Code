@@ -1,0 +1,14 @@
+---
+- name: Listen for events on a webhook
+  hosts: all
+  sources:
+    - ansible.eda.webhook:
+        host: 0.0.0.0
+        port: 5000
+
+  rules:
+    - name: Action for localhost
+      condition: event.payload.message == "localhost"
+      action:
+        run_playbook:
+          name: playbook_localhost.yml

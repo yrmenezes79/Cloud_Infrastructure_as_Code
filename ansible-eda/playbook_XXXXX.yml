@@ -1,0 +1,7 @@
+---
+- name: Teste Ping
+  hosts: XXXX
+  gather_facts: no
+  tasks:
+    - name: Ping do servidor
+      ping:
