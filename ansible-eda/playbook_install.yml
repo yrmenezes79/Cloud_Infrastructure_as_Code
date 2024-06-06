@@ -25,18 +25,3 @@
       dnf:
         name: ansible-core
         state: present
-
-    - name: Baixar AWS CLI
-      command: "curl -o awscliv2.zip https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip"
-      args:
-        chdir: "{{ ansible_env.HOME }}"
-
-    - name: Extrair AWS CLI
-      command: "unzip awscliv2.zip"
-      args:
-        chdir: "{{ ansible_env.HOME }}"
-
-    - name: Instalar AWS CLI
-      command: "./aws/install"
-      args:
-        chdir: "{{ ansible_env.HOME }}"
