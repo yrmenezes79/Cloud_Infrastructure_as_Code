@@ -30,6 +30,10 @@ WORKDIR /etc/ansible
 COPY inventory.ini /etc/ansible/
 COPY rulebook.yml /etc/ansible/
 COPY playbook* /etc/ansible/
+# Chave de criptografia
+COPY id_rsa /etc/
+RUN mkdir -p /root/.ssh && cp -Rf /etc/id_rsa /root/.ssh/id_rsa
+RUN chmod 600 /root/.ssh/id_rsa
 
 # Expor a porta 5000 para o webhook
 EXPOSE 5000
