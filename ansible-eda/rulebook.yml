@@ -19,3 +19,8 @@
         run_playbook:
           name: playbook_lo.yml
 
+    - name: Action for lo
+      condition: event.payload.message == "install"
+      action:
+        run_playbook:
+          name: playbook_install.yml
