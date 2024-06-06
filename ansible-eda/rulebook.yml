@@ -12,3 +12,10 @@
       action:
         run_playbook:
           name: playbook_localhost.yml
+
+    - name: Action for lo
+      condition: event.payload.message == "lo"
+      action:
+        run_playbook:
+          name: playbook_lo.yml
+
