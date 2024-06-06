@@ -1,7 +1,11 @@
 ---
-- name: Teste Ping
-  hosts: XXXX
-  gather_facts: no
+- name: Listar arquivos no diretório /tmp de uma instância remota
+  hosts: all
   tasks:
-    - name: Ping do servidor
-      ping:
+    - name: Executar ls no diretório /tmp
+      command: ls /tmp
+      register: ls_output
+
+    - name: Exibir saída do comando ls
+      debug:
+        var: ls_output.stdout
