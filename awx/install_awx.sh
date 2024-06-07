@@ -1,3 +1,5 @@
+#!/bin/bash
+
 check_return_code() {
     local return_code=$?
     local message=$1
