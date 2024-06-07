@@ -28,7 +28,7 @@ dnf install git net-tools unzip wget python3 python3-pip ansible-core -y
 check_return_code "$FASE"
 dnf install docker-ce --nobest -y
 check_return_code "$FASE"
-dnf install docker-ce --nobest 
+pip3 install docker-compose
 check_return_code "$FASE"
 ansible-galaxy collection install community.docker
 check_return_code "$FASE"
