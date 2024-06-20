@@ -24,7 +24,7 @@ check_return_code "$FASE"
 
 FASE="Instalacao de pacotes"
 echo "$(date '+%Y-%m-%d %H:%M:%S') - $FASE"
-dnf install git net-tools unzip wget python3 python3-pip ansible-core -y
+dnf install git net-tools unzip wget python3 python3-pip ansible-core jq -y
 check_return_code "$FASE"
 dnf install docker-ce --nobest -y
 check_return_code "$FASE"
