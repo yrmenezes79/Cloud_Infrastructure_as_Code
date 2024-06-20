@@ -37,13 +37,13 @@ while true; do
   echo "Current job status: $status"
   
   if [[ "$status" == "successful" ]]; then
-    echo "Job completed successfully."
+    echo "$(date '+%Y-%m-%d %H:%M:%S') Job completed successfully."
     break
   elif [[ "$status" == "failed" ]]; then
-    echo "Job failed."
+    echo "$(date '+%Y-%m-%d %H:%M:%S') Job failed."
     break
   else
-    echo "Job is $status..."
+    echo "$(date '+%Y-%m-%d %H:%M:%S') Job is $status..."
     sleep 10  # Aguarde 10 segundos antes de verificar novamente
   fi
 done
