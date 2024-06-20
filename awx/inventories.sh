@@ -1,7 +1,7 @@
 #!/bin/bash
 USER=admin
-PASSWORD=password
-URL="http://192.168.86.136"
+PASSWORD=
+URL="http://IP"
 ARQUIVO=response.json
 
 # Obter Token de Autenticação
