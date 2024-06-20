@@ -30,3 +30,18 @@ FASE="Iniciar o Template de Job"
 curl -H "Authorization: Bearer $TOKEN" -X POST "http://$AWX_SERVER/api/v2/job_templates/$JOB_TEMPLATE_ID/launch/" -H "Content-Type: application/json"
 check_return_code
 
+while true; do
+  status=$(curl -H "Authorization: Bearer $TOKEN" -X GET "http://$AWX_SERVER/api/v2/jobs/$job_id/" -H "Content-Type: application/json" | jq -r .status)
+  echo "Current job status: $status"
+  
+  if [[ "$status" == "successful" ]]; then
+    echo "$(date '+%Y-%m-%d %H:%M:%S') Job completed successfully."
+    break
+  elif [[ "$status" == "failed" ]]; then
+    echo "$(date '+%Y-%m-%d %H:%M:%S') Job failed."
+    break
+  else
+    echo "Job rodando. Aguarde..."
+    sleep 10  # Aguarde 10 segundos antes de verificar novamente
+  fi
+done
