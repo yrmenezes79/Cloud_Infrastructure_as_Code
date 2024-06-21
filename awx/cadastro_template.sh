@@ -4,6 +4,9 @@ AWX_SERVER="54.165.78.244"
 USERNAME="admin"
 PASSWORD="password"
 TEMPLATE_NAME="projeto1"
+INVENTARIO=""
+PROJETO=""
+PLAYBOOK=""
 
 check_return_code() {
     local return_code=$?
@@ -26,9 +29,9 @@ curl -H "Authorization: Bearer $TOKEN" -X POST "http://$AWX_SERVER/api/v2/job_te
   "name": "Novo Template de Job",
   "description": "Descrição do Template",
   "job_type": "run",
-  "inventory": 2,
-  "project": 8,
-  "playbook": "Exemplo2.yml",
+  "inventory": $INVENTARIO,
+  "project": $PROJETO,
+  "playbook": $PLAYBOOK,
   "credential": null,
   "verbosity": 0,
   "extra_vars": {}
