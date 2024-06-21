@@ -1,8 +1,8 @@
 #!/bin/bash
 
-AWX_SERVER="54.165.78.244"
+AWX_SERVER=""
 USERNAME="admin"
-PASSWORD="password"
+PASSWORD=""
 TEMPLATE_NAME="projeto1"
 INVENTARIO=""
 PROJETO=""
