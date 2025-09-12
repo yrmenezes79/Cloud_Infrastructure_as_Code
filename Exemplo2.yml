@@ -2,7 +2,7 @@
   hosts: all
 
   vars:
-    terraform_zip_url: "https://releases.hashicorp.com/terraform/1.8.2/terraform_1.8.2_linux_amd64.zip"
+    terraform_zip_url: "https://releases.hashicorp.com/terraform/1.8.2/terraform_1.13.2_linux_amd64.zip"
 
   tasks:
     - name: Download Terraform
@@ -31,3 +31,4 @@
       file:
         path: /usr/bin/terraform
         mode: "+x"
+
