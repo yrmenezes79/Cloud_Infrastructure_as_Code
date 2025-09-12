@@ -8,15 +8,15 @@
         name: git
         state: present
 
-    - name: Instalar Python 3.9 e pip
+    - name: Instalar Python 3 e pip
       dnf:
-        name: python3.9-pip
+        name: python3-pip
         state: present
 
     - name: Instalar boto3 e botocore usando pip3.9
       pip:
         name: "{{ item }}"
-        executable: pip3.9
+        executable: pip3
       loop:
         - boto3
         - botocore
