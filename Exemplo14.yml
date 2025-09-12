@@ -3,8 +3,8 @@
   hosts: localhost
   gather_facts: no
   tasks:
-    - name: Coletar fatos sobre os buckets do Amazon S3
-      community.aws.s3_bucket_facts.s3_bucket_facts:
+    - name: Coletar informações sobre os buckets do Amazon S3
+      community.aws.s3_bucket_info:
       register: s3_buckets
 
     - name: Exibir os buckets
