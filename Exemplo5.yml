@@ -1,6 +1,7 @@
 - name: TESTE
   hosts: all
-
+  become: yes
   tasks:
-        - include: Exemplo6.yml
-        - include: Exemplo7.yml
+        - import_tasks: Exemplo6.yml
+        - import_tasks: Exemplo7.yml
+
