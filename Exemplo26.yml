@@ -1,0 +1,144 @@
+---
+- name: Provisionar infraestrutura e deploy de aplicação web na AWS
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  vars:
+    # Variáveis de infraestrutura EC2
+    ec2_key_name: "minha-chave-ec2"
+    ec2_instance_type: "t2.micro"
+    ec2_ami: "ami-xxxxxxx"
+    ec2_count: 1
+    vpc_subnet_id: "subnet-xxxxxxxx"
+    ec2_security_group: "sg-xxxxxxxx"
+    ec2_tag_name: "WebServer"
+    # Variáveis de RDS
+    rds_instance_name: "projetoapp-db"
+    rds_instance_type: "db.t3.micro"
+    rds_engine_version: "8.0"
+    rds_storage: 20
+    rds_username: "admin"
+    rds_password: "senhaSuperSecreta"
+    rds_db_name: "meubanco"
+    rds_security_group: ["sg-yyyyyyyy"]
+    rds_subnet_group: "meu-subnet-group"
+    # Caminho do arquivo do site estático
+    static_site_path: "./index.html"
+    # Para upgrade/deploy contínuo
+    app_version: "v1.0.0"
+    # Para escalabilidade
+    scale_out: false
+    scale_count: 1
+
+  tasks:
+
+    - name: Provisionar instância EC2 para o webserver
+      amazon.aws.ec2:
+        key_name: "{{ ec2_key_name }}"
+        instance_type: "{{ ec2_instance_type }}"
+        image_id: "{{ ec2_ami }}"
+        wait: yes
+        count: "{{ scale_count if scale_out else ec2_count }}"
+        instance_tags:
+          Name: "{{ ec2_tag_name }}"
+        vpc_subnet_id: "{{ vpc_subnet_id }}"
+        group: "{{ ec2_security_group }}"
+      register: ec2
+
+    - name: Provisionar banco de dados RDS MySQL
+      amazon.aws.rds_instance:
+        instance_name: "{{ rds_instance_name }}"
+        db_instance_class: "{{ rds_instance_type }}"
+        engine: mysql
+        engine_version: "{{ rds_engine_version }}"
+        allocated_storage: "{{ rds_storage }}"
+        master_username: "{{ rds_username }}"
+        master_user_password: "{{ rds_password }}"
+        publicly_accessible: true
+        vpc_security_group_ids: "{{ rds_security_group }}"
+        db_subnet_group_name: "{{ rds_subnet_group }}"
+        db_name: "{{ rds_db_name }}"
+      register: rds
+      when: not scale_out
+
+    - name: Esperar até a instância EC2 estar acessível por SSH
+      ansible.builtin.wait_for:
+        host: "{{ item.public_ip }}"
+        port: 22
+        timeout: 300
+        state: started
+      loop: "{{ ec2.instances }}"
+      loop_control:
+        label: "{{ item.public_ip }}"
+
+    - name: Adicionar EC2 ao inventário dinâmico
+      add_host:
+        name: "{{ item.public_dns_name }}"
+        groups: webservers
+        ansible_user: ec2-user
+        ansible_ssh_private_key_file: ~/.ssh/{{ ec2_key_name }}.pem
+      loop: "{{ ec2.instances }}"
+      loop_control:
+        label: "{{ item.public_dns_name }}"
+
+- name: Configurar e Deploy da Aplicação Web na(s) instância(s) EC2
+  hosts: webservers
+  become: yes
+
+  vars:
+    rds_endpoint: "{{ hostvars['localhost']['rds'].instance.endpoint.address if 'rds' in hostvars['localhost'] else '' }}"
+    rds_username: "{{ hostvars['localhost']['rds_username'] }}"
+    rds_password: "{{ hostvars['localhost']['rds_password'] }}"
+    rds_db_name: "{{ hostvars['localhost']['rds_db_name'] }}"
+    app_version: "{{ hostvars['localhost']['app_version'] }}"
+    static_site_path: "{{ hostvars['localhost']['static_site_path'] }}"
+
+  tasks:
+    - name: Instalar Nginx e cliente MySQL
+      ansible.builtin.yum:
+        name:
+          - nginx
+          - mysql
+        state: present
+
+    - name: Iniciar e habilitar Nginx
+      ansible.builtin.service:
+        name: nginx
+        state: started
+        enabled: yes
+
+    - name: Abrir porta 80 no firewall
+      ansible.builtin.firewalld:
+        port: 80/tcp
+        permanent: yes
+        state: enabled
+      notify: restart nginx
+
+    - name: Fazer deploy do site estático
+      ansible.builtin.copy:
+        src: "{{ static_site_path }}"
+        dest: /usr/share/nginx/html/index.html
+        owner: nginx
+        group: nginx
+        mode: '0644'
+      notify: restart nginx
+
+    - name: Criar arquivo de configuração de banco de dados
+      ansible.builtin.template:
+        src: db_config.j2
+        dest: /etc/myapp/db.conf
+        mode: '0640'
+
+    - name: Verificar se aplicação está acessível na porta 80
+      ansible.builtin.uri:
+        url: "http://localhost"
+        status_code: 200
+
+  handlers:
+    - name: restart nginx
+      ansible.builtin.service:
+        name: nginx
+        state: restarted
+
+# Template necessário (coloque ao lado do playbook como db_config.j2):
