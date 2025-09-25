@@ -21,9 +21,12 @@ aws --version || { echo -e "${RED}Falha ao instalar AWS CLI${NC}"; exit 1; }
 
 echo -e "${YELLOW}Instalando Ansible...${NC}"
 # Em versões novas do RHEL pode precisar habilitar repositório EPEL
-sudo yum install -y epel-release
-sudo yum install -y ansible || pip3 install ansible
+sudo dnf install ansible-core python-pip 
+sudo pip install boto3 botocore
 
 ansible --version || { echo -e "${RED}Falha ao instalar Ansible${NC}"; exit 1; }
 
 echo -e "${GREEN}Instalação concluída com sucesso!${NC}"
+
+ansible --version
+aws --vsrsion
