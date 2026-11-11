@@ -1,0 +1,51 @@
+---
+- name: Criar Security Group na AWS
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  vars:
+    aws_region: "us-east-1"
+    sg_name: "ansible-web-sg"
+    sg_description: "Security Group criado via Ansible para servidor Web"
+    # Opcional: Especifique a VPC se não quiser usar a VPC padrão
+    # vpc_id: "vpc-0123456789abcdef0"
+
+  tasks:
+    - name: Criar Security Group com regras de acesso
+      amazon.aws.ec2_security_group:
+        name: "{{ sg_name }}"
+        description: "{{ sg_description }}"
+        region: "{{ aws_region }}"
+        # vpc_id: "{{ vpc_id }}"
+        rules:
+          # Permite SSH apenas para administração (Porta 22)
+          - proto: tcp
+            from_port: 22
+            to_port: 22
+            cidr_ip: 0.0.0.0/0
+            rule_desc: "Acesso SSH"
+
+          # Permite tráfego Web HTTP (Porta 80)
+          - proto: tcp
+            from_port: 80
+            to_port: 80
+            cidr_ip: 0.0.0.0/0
+            rule_desc: "Acesso HTTP"
+
+          # Permite tráfego Web HTTPS (Porta 443)
+          - proto: tcp
+            from_port: 443
+            to_port: 443
+            cidr_ip: 0.0.0.0/0
+            rule_desc: "Acesso HTTPS"
+
+        rules_egress:
+          # Permite todo o tráfego de saída
+          - proto: all
+            cidr_ip: 0.0.0.0/0
+      register: sg_result
+
+    - name: Exibir o ID do Security Group criado
+      ansible.builtin.debug:
+        msg: "Security Group criado com sucesso! ID: {{ sg_result.group_id }}"
