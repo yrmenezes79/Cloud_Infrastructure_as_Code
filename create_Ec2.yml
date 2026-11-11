@@ -1,0 +1,38 @@
+---
+- name: Criar Instância EC2 usando Chave Existente na AWS
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  vars:
+    aws_region: "us-east-1"
+    instance_type: "t2.micro"
+    ami_id: "ami-0c101f26f147fa7fd"
+    key_name: "teste"                        # Nome da chave já existente na AWS
+    security_group_id: "sg-XXXXXXXXXXXXXXXXX"
+
+  tasks:
+    - name: Criar instancia EC2 na AWS
+      amazon.aws.ec2_instance:
+        name: "Instancia-Ansible-Demo"
+        key_name: "{{ key_name }}"
+        instance_type: "{{ instance_type }}"
+        image_id: "{{ ami_id }}"
+        security_groups:
+          - "{{ security_group_id }}"
+        region: "{{ aws_region }}"
+        wait: true
+        network_interfaces:
+          - assign_public_ip: true
+        tags:
+          Environment: "Dev"
+          ManagedBy: "Ansible"
+      register: ec2
+
+    - name: Exibir detalhes da instância criada
+      ansible.builtin.debug:
+        msg:
+          - "Instância criada com sucesso!"
+          - "ID da Instância: {{ ec2.instances[0].instance_id }}"
+          - "IP Público: {{ ec2.instances[0].public_ip_address }}"
+          - "Para conectar via SSH (com seu arquivo .ppk ou .pem): ssh -i /caminho/para/sua-chave ec2-user@{{ ec2.instances[0].public_ip_address }}"
