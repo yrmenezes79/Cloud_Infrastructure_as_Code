@@ -1,0 +1,28 @@
+---
+- name: Criar Bucket S3 na AWS
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  vars:
+    # O nome do bucket precisa ser globalmente único no AWS S3
+    bucket_name: "meu-bucket-ansible-demo-12345"
+    aws_region: "us-east-1"
+
+  tasks:
+    - name: Criar bucket S3
+      amazon.aws.s3_bucket:
+        name: "{{ bucket_name }}"
+        state: present
+        region: "{{ aws_region }}"
+        versioning: true
+        public_access:
+          block_public_acls: true
+          block_public_policy: true
+          ignore_public_acls: true
+          restrict_public_buckets: true
+      register: s3_result
+
+    - name: Exibir detalhes do bucket criado
+      ansible.builtin.debug:
+        msg: "Bucket '{{ bucket_name }}' criado com sucesso na região {{ aws_region }}."
