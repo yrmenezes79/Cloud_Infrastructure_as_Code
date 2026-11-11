@@ -1,0 +1,27 @@
+---
+- name: Criar Bucket S3 na AWS com Session Token
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  vars:
+    bucket_name: "meu-bucket-ansible-demo-12345"
+    aws_region: "us-east-1"
+    aws_access_key: ""
+    aws_secret_key: ""
+    aws_session_token: ""
+  tasks:
+    - name: Criar bucket S3
+      amazon.aws.s3_bucket:
+        name: "{{ bucket_name }}"
+        state: present
+        region: "{{ aws_region }}"
+        access_key: "{{ aws_access_key }}"
+        secret_key: "{{ aws_secret_key }}"
+        security_token: "{{ aws_session_token }}"
+        versioning: true
+      register: s3_result
+
+    - name: Exibir confirmação
+      ansible.builtin.debug:
+        msg: "Bucket {{ bucket_name }} criado com sucesso!"
