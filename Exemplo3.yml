@@ -1,5 +1,5 @@
 - name: 1 – Instalação mysql
-  hosts: server2
+  hosts: all
   become: true
   tasks:
     # task 1
