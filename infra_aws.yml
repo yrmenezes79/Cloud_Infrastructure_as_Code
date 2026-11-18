@@ -1,0 +1,21 @@
+---
+- name: Instalar Git, Python e bibliotecas AWS (boto3 e botocore) no Red Hat
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Instalar Git, Python 3 e pip
+      ansible.builtin.dnf:
+        name:
+          - git
+          - python3
+          - python3-pip
+        state: present
+
+    - name: Instalar boto3 e botocore via pip
+      ansible.builtin.pip:
+        name:
+          - boto3
+          - botocore
+        state: present
+        executable: pip3
